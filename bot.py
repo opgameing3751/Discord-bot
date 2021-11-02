@@ -1,15 +1,17 @@
 # bot.py
+import subprocess
 import os
 import discord
 import asyncio
 import time
-import GUI
+
+
 from tkinter import *
 from discord import message
 from discord.ext import commands
 from dotenv import load_dotenv
 bot_version = 0.2
-os.startfile('GUI.py')
+
 
 load_dotenv()
 TOKEN = 'OTAyOTE4NzEyNjQwNzk4Nzkw.YXlalA.NdhJBu5KNpC3ygZBYwg3akYmgnk'
@@ -18,6 +20,7 @@ times = 0
 bot = commands.Bot(command_prefix='!')
 prefix = ('!')
 bot_alive_time = 0
+
 
 
 @bot.event
@@ -63,18 +66,22 @@ async def spamtimes(ctx):
 async def spam(ctx):
     global times
     spamed = f'{ctx.message.content}'
-    spam = spamed.replace('!spam', '')
-    channel = bot.get_channel(902902470328594452)
-    await channel.send(f'**{ctx.author.name}** is spaming**{spam}** in **{ctx.channel}**')
-    
-    if times == 0:
-        await ctx.send(f'spemed nothing plz use {prefix}spamtimes to set how many times to spam')
+    spam = spamed.replace('!spam','')
+    spam2 = spam.replace('@everyone', '')
+    spam3 = spam2.replace('@', '')
+    if spam2 == '@everyone':
+        await ctx.send('ya no sorry you can just @ everyone')
     else:
-        while times > 0:
-            await ctx.send(f'{spam}')
-            print(f'{spam}')
-            time.sleep(.1)
-            times -= 1
+        channel = bot.get_channel(902902470328594452)
+        await channel.send(f'**{ctx.author.name}** is spaming**{spam}** in **{ctx.channel}**')
+        if times == 0:
+            await ctx.send(f'spemed nothing plz use {prefix}spamtimes to set how many times to spam')
+        else:
+            while times > 0:
+                await ctx.send(f'{spam3}')
+                print(f'{spam}')
+                time.sleep(.1)
+                times -= 1
 
 
 @bot.command(name='set_activity', help='sets the activity of the bot')
@@ -85,9 +92,10 @@ async def bot_activity(ctx):
     await bot.change_presence(activity=activit)
     channel = bot.get_channel(902902470328594452)
     await channel.send(f'**{ctx.author.name}** used the "set_activity" command')
+
+
 #@bot.event
 #async def on_message(ctx):
 #    print(f"{ctx.channel}-{ctx.author.name}: {ctx.content}")
 
 bot.run(TOKEN)
-root = mainloop()
