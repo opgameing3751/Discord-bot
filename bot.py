@@ -6,7 +6,7 @@ import time
 from discord import message
 from discord.ext import commands
 from dotenv import load_dotenv
-#hi
+
 load_dotenv()
 TOKEN = 'OTAyOTE4NzEyNjQwNzk4Nzkw.YXlalA.NdhJBu5KNpC3ygZBYwg3akYmgnk'
 bot = discord.Client()
