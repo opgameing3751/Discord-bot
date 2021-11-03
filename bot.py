@@ -26,6 +26,7 @@ def updatetime():
     os.environ["uptime"] = f"{bot_alive_time}"
     print(os.environ['uptime'])  # outputs 'newvalue'
     dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
+    
 
 
 @bot.event
