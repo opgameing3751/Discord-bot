@@ -108,38 +108,21 @@ async def bot():
 
 
 async def GUI():
-    #import bot
+    import GUI
     #from PIL import Image, ImageTk
     #from bot import bot_alive_time
     #from bot import bot_version
     GUI_version = 0.1
     
     
-    root = Tk()
-    root.configure(bg='gray')
-    root.geometry("550x305")
-    root.maxsize(550, 305)
-    root.minsize(550, 305)
-    root.title(f'Stream Manager')
-
-
-
-    def start_bot():
-        print('hello')
-
-    button1 = Button(root, text='start bot', bg='gray', fg='black',command=start_bot)
-    button1.pack()
-
-    root.mainloop()
-  
 async def main():
-    f1 = loop.create_task(bot())
-    f2 = loop.create_task(GUI())
+    f1 = loop.create_task(GUI())
+    f2 = loop.create_task(bot())
     await asyncio.wait([f1, f2])
 
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+loop.forever()
 #asyncio.run(bot())
 #asyncio.run(GUI())
 

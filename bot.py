@@ -11,7 +11,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 bot_version = 0.2
 
-
+root =Tk()
 dotenv_file = dotenv.find_dotenv()
 dotenv.load_dotenv(dotenv_file)
 TOKEN = 'OTAyOTE4NzEyNjQwNzk4Nzkw.YXlalA.NdhJBu5KNpC3ygZBYwg3akYmgnk'
@@ -20,14 +20,16 @@ times = 0
 bot = commands.Bot(command_prefix='!')
 prefix = ('!')
 bot_alive_time = 0
-final_yes = 'online'
+final_yes = os.getenv('last_act')
+
 def updatetime():
     print(os.environ["uptime"])  # outputs "value"
     os.environ["uptime"] = f"{bot_alive_time}"
     print(os.environ['uptime'])  # outputs 'newvalue'
     dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
+    os.environ['last_act'] = f'{final_yes}'
+    dotenv.set_key(dotenv_file, 'last_act', os.environ['last_act'])
     
-
 
 @bot.event
 async def on_ready():
@@ -46,9 +48,6 @@ async def on_ready():
         updatetime()
         
         
-        
-
-
 @bot.command(name = 'uptime', help = 'hows how long the bot has been online')
 async def uptime(ctx):
     await ctx.send(f'I have been online for {bot_alive_time} seconds')
@@ -57,6 +56,7 @@ async def uptime(ctx):
 @bot.command(name = "ping", help='sends a ping mosly for testing')
 async def  ping(ctx):
     await ctx.send("pong")
+
 
 @bot.command(name = 'quit', help = 'kills the bot')
 async def quit(ctx):
@@ -69,6 +69,7 @@ async def quit(ctx):
         await exit()
     else:
         await ctx.send(f"sorry {ctx.author.name} you cant do thatthe")
+
 
 @bot.command(name = 'spamtimes', help = 'number of time you want the spam command to spam')
 async def spamtimes(ctx):
@@ -107,9 +108,7 @@ async def bot_activity(ctx):
     yes = f'{ctx.message.content}'
     final_yes = yes.replace('!set_activity', '')
     activitity = (f'{final_yes}')
-
-    #activit = discord.Game(name=f'{final_yes}', type=3)
-    #await bot.change_presence(activity=activit)
+    
     channel = bot.get_channel(902902470328594452)
     await channel.send(f'**{ctx.author.name}** used the "set_activity" command')
 
@@ -119,3 +118,4 @@ async def bot_activity(ctx):
 #    print(f"{ctx.channel}-{ctx.author.name}: {ctx.content}")
 
 bot.run(TOKEN)
+root.mainloop()
