@@ -122,7 +122,7 @@ async def main():
 
 
 loop = asyncio.get_event_loop()
-loop.forever()
+loop.run_until_complete(main())
 #asyncio.run(bot())
 #asyncio.run(GUI())
 

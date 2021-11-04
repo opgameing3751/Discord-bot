@@ -12,8 +12,10 @@ from dotenv import load_dotenv
 bot_version = 0.2
 
 root =Tk()
+
 dotenv_file = dotenv.find_dotenv()
-dotenv.load_dotenv(dotenv_file)
+load_dotenv()
+
 TOKEN = 'OTAyOTE4NzEyNjQwNzk4Nzkw.YXlalA.NdhJBu5KNpC3ygZBYwg3akYmgnk'
 bot = discord.Client()
 times = 0
@@ -23,7 +25,6 @@ bot_alive_time = 0
 final_yes = os.getenv('last_act')
 
 def updatetime():
-    print(os.environ["uptime"])  # outputs "value"
     os.environ["uptime"] = f"{bot_alive_time}"
     print(os.environ['uptime'])  # outputs 'newvalue'
     dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
@@ -105,13 +106,16 @@ async def spam(ctx):
 @bot.command(name='set_activity', help='sets the activity of the bot')
 async def bot_activity(ctx):
     global final_yes
-    yes = f'{ctx.message.content}'
-    final_yes = yes.replace('!set_activity', '')
-    activitity = (f'{final_yes}')
-    
-    channel = bot.get_channel(902902470328594452)
-    await channel.send(f'**{ctx.author.name}** used the "set_activity" command')
-
+    if ctx.author.name == "opgameing3751":
+        yes = f'{ctx.message.content}'
+        final_yes = yes.replace('!set_activity', '')
+        activitity = (f'{final_yes}')
+        channel = bot.get_channel(902902470328594452)
+        await channel.send(f'**{ctx.author.name}** used the "set_activity" command')
+    else:
+        await ctx.send(f"sorry {ctx.author.name} you can't do that")
+        channel = bot.get_channel(902902470328594452)
+        await channel.send(f'**{ctx.author.name}** tried to use "set_activity" but did not have the perms to')
 
 #@bot.event
 #async def on_message(ctx):
