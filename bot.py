@@ -11,6 +11,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 bot_version = 0.2
 
+
 root =Tk()
 
 dotenv_file = dotenv.find_dotenv()
@@ -24,12 +25,32 @@ prefix = ('!')
 bot_alive_time = 0
 final_yes = os.getenv('last_act')
 
+
+uptime = 0
+uptime = os.getenv('uptime')
+print(f'last online time was {uptime}')
+life = os.getenv('lifetime')
+print(f'life time is {life}')
+#lifetime = int(uptime)
+lifetime = int(life) + int(uptime) 
+os.environ["lifetime"] = f"{lifetime}"
+dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
+print(f'after math {lifetime}')         
+time.sleep(1)
+
+
 def updatetime():
+    global lifetime
     os.environ["uptime"] = f"{bot_alive_time}"
     print(os.environ['uptime'])  # outputs 'newvalue'
     dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
     os.environ['last_act'] = f'{final_yes}'
     dotenv.set_key(dotenv_file, 'last_act', os.environ['last_act'])
+    #life = os.getenv('lifetime')
+    #lifetime = life + bot_alive_time
+    #lifetime += 1 
+    #os.environ['lifetime'] = lifetime
+    dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
     
 
 @bot.event
@@ -40,6 +61,9 @@ async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     channel = bot.get_channel(902902470328594452)
     await channel.send(f'**Bot is now online**')
+    await channel.send(f'last online time {os.getenv("uptime")}')
+    await channel.send(f'lifetime {os.getenv("lifetime")}')
+    await channel.send(f'current activity is {final_yes}')
     bot_alive_time = 1
     while bot_status == 1:
         await asyncio.sleep(1)
@@ -52,7 +76,7 @@ async def on_ready():
 @bot.command(name = 'uptime', help = 'hows how long the bot has been online')
 async def uptime(ctx):
     await ctx.send(f'I have been online for {bot_alive_time} seconds')
-
+    await ctx.send(f'and my life time is {lifetime}')
 
 @bot.command(name = "ping", help='sends a ping mosly for testing')
 async def  ping(ctx):
