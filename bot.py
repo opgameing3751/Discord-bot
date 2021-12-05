@@ -38,7 +38,7 @@ os.environ["lifetime"] = f"{lifetime}"
 dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
 print(f'after math {lifetime}')         
 time.sleep(1)
-restart()
+
 
 
 def updatetime():
