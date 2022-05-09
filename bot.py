@@ -19,7 +19,7 @@ now = datetime.now()
 dotenv_file = dotenv.find_dotenv()
 load_dotenv()
 
-TOKEN = 'OTAyOTE4NzEyNjQwNzk4Nzkw.YXlalA.NdhJBu5KNpC3ygZBYwg3akYmgnk'
+TOKEN = 'OTAyOTE4NzEyNjQwNzk4Nzkw.YXlalA.3IM_ZyppX3ZvfI8Im-VYqxX_4H8'
 bot = discord.Client()
 times = 0
 bot = commands.Bot(command_prefix='!')
@@ -35,23 +35,23 @@ print(f'life time is {life}')
 #lifetime = int(uptime)
 lifetime = int(life) + int(uptime) 
 os.environ["lifetime"] = f"{lifetime}"
-dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
+#dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
 print(f'after math {lifetime}')         
-time.sleep(1)
 
 
 
-def updatetime():
-    global lifetime
-    os.environ["uptime"] = f"{bot_alive_time}"
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-    print(current_time)
-    print(os.environ['uptime'])  # outputs 'newvalue'
-    dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
-    os.environ['last_act'] = f'{final_yes}'
-    dotenv.set_key(dotenv_file, 'last_act', os.environ['last_act'])
-    dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
+
+#def updatetime():
+ #   global lifetime
+  #  os.environ["uptime"] = f"{bot_alive_time}"
+   # now = datetime.now()
+    #current_time = now.strftime("%H:%M:%S")
+    #print(current_time)
+    #print(os.environ['uptime'])  # outputs 'newvalue'
+    #dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
+    #os.environ['last_act'] = f'{final_yes}'
+    #dotenv.set_key(dotenv_file, 'last_act', os.environ['last_act'])
+    #dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
     
     
     
@@ -67,11 +67,41 @@ async def on_ready():
     await channel.send(f'last online time {os.getenv("uptime")}')
     await channel.send(f'lifetime {os.getenv("lifetime")}')
     await channel.send(f'current activity is {final_yes}')
+    activit = discord.Game(name=f'{final_yes}', type=3)
+    bot.change_presence(activity=activit)
     bot_alive_time = 1
     while bot_status == 1:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
+        print(current_time)
         if current_time == "00:00:00":
+            print('restarting server')
+            channel = bot.get_channel(829002985048113154)
+            await channel.send(f'server restart in 10s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 9s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 8s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 7s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 6s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 5s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 4s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 3s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 2s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restart in 1s')
+            await asyncio.sleep(1)
+            await channel.send(f'server restarting')
+            await asyncio.sleep(1)
+            channel = bot.get_channel(916176075539750963)
+            await channel.send('stop')
+        elif current_time == "12:00:00":
             print('restarting server')
             channel = bot.get_channel(829002985048113154)
             await channel.send(f'server restart in 10s')
@@ -101,9 +131,8 @@ async def on_ready():
         else:
             await asyncio.sleep(1)
             bot_alive_time += 1
-            activit = discord.Game(name=f'uptime - {bot_alive_time} | {final_yes}', type=3)
-            await bot.change_presence(activity=activit)
-            updatetime()
+            
+            #updatetime()
         
         
         
@@ -119,12 +148,19 @@ async def  ping(ctx):
 
 @bot.command(name = 'quit', help = 'kills the bot')
 async def quit(ctx):
+    global lifetime
     if ctx.author.name == "opgameing3751":
         global bot_alive_time
         await ctx.send('ok im shuting down')
         channel = bot.get_channel(902902470328594452)
         await channel.send(f'**{ctx.author.name}** used the "quit" command')
         await ctx.send(f'the bot was online for {bot_alive_time} seconds')
+        os.environ["uptime"] = f"{bot_alive_time}"
+        print(os.environ['uptime'])  # outputs 'newvalue'
+        dotenv.set_key(dotenv_file, "uptime", os.environ["uptime"])
+        os.environ['last_act'] = f'{final_yes}'
+        dotenv.set_key(dotenv_file, 'last_act', os.environ['last_act'])
+        dotenv.set_key(dotenv_file, 'lifetime', os.environ['lifetime'])
         await exit()
     else:
         await ctx.send(f"sorry {ctx.author.name} you cant do that.")
@@ -170,6 +206,8 @@ async def bot_activity(ctx):
         activitity = (f'{final_yes}')
         channel = bot.get_channel(902902470328594452)
         await channel.send(f'**{ctx.author.name}** used the "set_activity" command')
+        activit = discord.Game(name=f'{final_yes}', type=3)
+        await bot.change_presence(activity=activit)
     else:
         await ctx.send(f"sorry {ctx.author.name} you can't do that")
         channel = bot.get_channel(902902470328594452)
@@ -186,25 +224,27 @@ async def restart(ctx):
     if ctx.author.name == "opgameing3751":
         channel = bot.get_channel(829002985048113154)
         await channel.send(f'server restart in 10s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 9s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 8s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 7s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 6s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 5s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 4s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 3s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 2s')
-        time.sleep(1)
+        await asyncio.sleep(1)
         await channel.send(f'server restart in 1s')
-        time.sleep(1)
+        await asyncio.sleep(1)
+        await channel.send(f'server restarting')
+        await asyncio.sleep(1)
         channel = bot.get_channel(916176075539750963)
         await channel.send('stop')
     else:
